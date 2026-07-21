@@ -65,7 +65,7 @@ export async function GET(request: Request) {
           _sum: { totalAmount: true },
           where: {
             status: { not: "ANULADA" },
-            date: { gte: start, lte: end },
+            issueDate: { gte: start, lte: end },
           },
         }),
         prisma.expense.aggregate({
@@ -156,7 +156,7 @@ export async function GET(request: Request) {
       })),
       ...recentInvoices.map((inv) => ({
         id: inv.id,
-        date: inv.date,
+        date: inv.issueDate,
         type: "INCOME" as const,
         description: `Factura ${inv.number} - ${inv.client.name}`,
         amount: inv.totalAmount,

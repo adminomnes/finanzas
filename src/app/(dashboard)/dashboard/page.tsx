@@ -212,16 +212,22 @@ export default function DashboardPage() {
                       </span>
                       <Badge 
                         status={
-                          mov.status === "APPROVED" || mov.status === "RECEIVED" ? "approved" :
-                          mov.status === "PENDING" ? "pending" :
-                          mov.status === "REJECTED" ? "rejected" : "default"
+                          mov.status === "APPROVED" || mov.status === "RECEIVED" || mov.status === "PAGADA" ? "approved" :
+                          mov.status === "PENDING" || mov.status === "PENDIENTE_PAGO" || mov.status === "EMITIDA" || mov.status === "ENVIADA" ? "pending" :
+                          mov.status === "REJECTED" || mov.status === "VENCIDA" ? "rejected" : "default"
                         }
                       >
                         {mov.status === "APPROVED" ? "Aprobado" :
                          mov.status === "RECEIVED" ? "Recibido" :
+                         mov.status === "PAGADA" ? "Pagada" :
                          mov.status === "PENDING" ? "Pendiente" :
+                         mov.status === "PENDIENTE_PAGO" ? "Pendiente Pago" :
+                         mov.status === "EMITIDA" ? "Emitida" :
+                         mov.status === "ENVIADA" ? "Enviada" :
                          mov.status === "REJECTED" ? "Rechazado" :
-                         mov.status === "CANCELLED" ? "Anulado" : mov.status}
+                         mov.status === "VENCIDA" ? "Vencida" :
+                         mov.status === "CANCELLED" || mov.status === "ANULADA" ? "Anulado" :
+                         mov.status === "BORRADOR" ? "Borrador" : mov.status}
                       </Badge>
                     </div>
                   </div>
