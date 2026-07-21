@@ -10,7 +10,7 @@ export async function POST() {
     const token = cookie.get("session")?.value
 
     if (token) {
-      const payload = verifyToken(token)
+      const payload = await verifyToken(token)
       if (payload) {
         await prisma.session.updateMany({
           where: { token: payload.sessionId },

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { requireRole } from "@/lib/auth"
 import { createAuditLog } from "@/lib/audit"
-import type { RoleType } from "@prisma/client"
+import type { RoleType } from "@/types/prisma-enums"
 
 export async function GET() {
   try {

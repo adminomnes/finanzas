@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { getSession } from "@/lib/auth"
-import type { InvoiceStatus } from "@prisma/client"
+import type { InvoiceStatus } from "@/types/prisma-enums"
 
 export async function GET() {
   try {

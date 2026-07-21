@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { getSession } from "@/lib/auth"
 import { createAuditLog } from "@/lib/audit"
-import type { InvoiceStatus } from "@prisma/client"
+import type { InvoiceStatus } from "@/types/prisma-enums"
 
 const validTransitions: Record<string, InvoiceStatus[]> = {
   BORRADOR: ["EMITIDA"],

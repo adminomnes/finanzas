@@ -15,8 +15,6 @@ const cspHeader = `
 `
 
 const nextConfig: NextConfig = {
-  // Configuración obligatoria para despliegues en contenedores (VPS)
-  output: "standalone",
   experimental: {
     serverActions: {
       bodySizeLimit: "10mb",

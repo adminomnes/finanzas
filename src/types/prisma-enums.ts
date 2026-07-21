@@ -1,0 +1,35 @@
+export type RoleType = "SUPER_ADMIN" | "ADMIN" | "OPERATOR"
+
+export type ExpenseStatus = "DRAFT" | "PENDING" | "APPROVED" | "REJECTED" | "CANCELLED" | "PAGADO" | "ARCHIVADO"
+
+export type InvoiceStatus = "BORRADOR" | "EMITIDA" | "ENVIADA" | "PENDIENTE_PAGO" | "PAGADA" | "VENCIDA" | "ANULADA"
+
+export type AuditAction =
+  | "CREATE"
+  | "UPDATE"
+  | "DELETE"
+  | "LOGIN"
+  | "LOGIN_FAILED"
+  | "LOGOUT"
+  | "EXPORT"
+  | "PERMISSION_CHANGE"
+  | "PASSWORD_CHANGE"
+  | "PASSWORD_RESET"
+  | "SESSION_REVOKE"
+  | "ACCOUNT_LOCK"
+  | "APPROVE"
+  | "REJECT"
+  | "SOFT_DELETE"
+
+export type AuditModule =
+  | "USUARIOS"
+  | "SEGURIDAD"
+  | "FINANZAS"
+  | "CONFIGURACION"
+  | "PROVEEDORES"
+  | "AUDITORIA"
+  | "CLIENTES"
+  | "FACTURACION"
+  | "COBRANZA"
+  | "MULTIEMPRESA"
+  | "DESARROLLO"

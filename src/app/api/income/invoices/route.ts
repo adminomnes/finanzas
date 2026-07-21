@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { getSession, requireRole } from "@/lib/auth"
 import { createAuditLog } from "@/lib/audit"
-import type { InvoiceStatus } from "@prisma/client"
+import type { InvoiceStatus } from "@/types/prisma-enums"
 
 export async function GET(request: Request) {
   try {

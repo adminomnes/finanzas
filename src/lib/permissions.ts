@@ -1,5 +1,5 @@
 import { prisma } from "./prisma"
-import type { RoleType } from "@prisma/client"
+import type { RoleType } from "@/types/prisma-enums"
 
 export const PERMISSIONS = {
   EXPENSES_CREATE: { key: "expenses.create", name: "Crear Gastos", module: "Gastos" },

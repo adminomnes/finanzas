@@ -1,5 +1,5 @@
 import { prisma } from "./prisma"
-import type { AuditAction, AuditModule } from "@prisma/client"
+import type { AuditAction, AuditModule } from "@/types/prisma-enums"
 import { headers } from "next/headers"
 
 interface AuditEntry {

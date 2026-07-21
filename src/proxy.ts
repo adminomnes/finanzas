@@ -28,7 +28,7 @@ const routePermissions: Record<string, string[]> = {
   "/admin/development": [],
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   if (publicPaths.some((p) => pathname.startsWith(p))) {
