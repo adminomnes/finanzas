@@ -1,0 +1,154 @@
+@import "tailwindcss";
+
+/* OMNES FINANCE - ENTERPRISE DESIGN SYSTEM */
+
+:root {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Color Palette */
+  --color-primary: #2563EB;
+  --color-primary-hover: #1D4ED8;
+  --color-primary-active: #1E40AF;
+  --color-primary-light: #EFF6FF;
+
+  --color-secondary: #0F172A;
+  --color-secondary-hover: #1E293B;
+
+  --color-accent: #14B8A6;
+  --color-accent-hover: #0D9488;
+  --color-accent-light: #F0FDFA;
+
+  --color-background: #F8FAFC;
+  --color-surface: #FFFFFF;
+  --color-surface-hover: #F8FAFC;
+  
+  /* Text */
+  --color-text-primary: #111827;
+  --color-text-secondary: #64748B;
+  --color-text-muted: #94A3B8;
+
+  /* States */
+  --color-success: #22C55E;
+  --color-success-bg: #DCFCE7;
+  --color-warning: #F59E0B;
+  --color-warning-bg: #FEF3C7;
+  --color-error: #EF4444;
+  --color-error-bg: #FEE2E2;
+  --color-info: #3B82F6;
+  --color-info-bg: #DBEAFE;
+
+  /* Borders */
+  --color-border: #E2E8F0;
+  --color-border-light: #F1F5F9;
+  --color-border-focus: #93C5FD;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+  --shadow-card: 0 2px 10px rgba(0, 0, 0, 0.03);
+  --shadow-card-hover: 0 8px 30px rgba(0, 0, 0, 0.08);
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reset & Base */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  font-size: 14px; /* Enterprise apps usually use slightly smaller text for density */
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button, input, optgroup, select, textarea {
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.15;
+  margin: 0;
+}
+
+button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+/* Typography Utilities */
+.h1 { font-size: 24px; font-weight: 600; letter-spacing: -0.02em; color: var(--color-secondary); }
+.h2 { font-size: 20px; font-weight: 600; letter-spacing: -0.01em; color: var(--color-secondary); }
+.h3 { font-size: 16px; font-weight: 600; color: var(--color-secondary); }
+.text-body { font-size: 14px; color: var(--color-text-primary); }
+.text-sm { font-size: 13px; color: var(--color-text-secondary); }
+.text-xs { font-size: 12px; color: var(--color-text-muted); }
+.text-mono { font-family: var(--font-mono); }
+
+/* Global Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes skeletonLoading {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-fade-in {
+  animation: fadeIn var(--transition-normal) forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp var(--transition-normal) forwards;
+}
+
+/* Custom Scrollbar for Enterprise Feel */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-text-muted);
+}

@@ -1,0 +1,53 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.icon {
+  width: 12px;
+  height: 12px;
+}
+
+/* States */
+.status-pending {
+  background-color: var(--color-warning-bg);
+  color: #B45309; /* Darker amber for text */
+}
+
+.status-approved {
+  background-color: var(--color-success-bg);
+  color: #15803D;
+}
+
+.status-rejected {
+  background-color: var(--color-error-bg);
+  color: #B91C1C;
+}
+
+.status-paid {
+  background-color: var(--color-info-bg);
+  color: #1D4ED8;
+}
+
+.status-active {
+  background-color: var(--color-success-bg);
+  color: #15803D;
+}
+
+.status-inactive {
+  background-color: var(--color-border-light);
+  color: var(--color-text-secondary);
+}
+
+.status-default {
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+}

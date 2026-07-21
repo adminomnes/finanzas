@@ -1,0 +1,72 @@
+.container {
+  position: relative;
+  display: inline-block;
+}
+
+.trigger {
+  cursor: pointer;
+}
+
+.dropdown {
+  position: absolute;
+  z-index: 50;
+  margin-top: 6px;
+  min-width: 180px;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-light);
+  box-shadow: var(--shadow-lg);
+  padding: 4px;
+  animation: slideUp var(--transition-fast) forwards;
+}
+
+.alignRight {
+  right: 0;
+}
+
+.alignLeft {
+  left: 0;
+}
+
+.divider {
+  margin: 4px 0;
+  border-top: 1px solid var(--color-border-light);
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: left;
+}
+
+.itemDefault {
+  color: var(--color-text-primary);
+}
+
+.itemDefault:hover {
+  background-color: var(--color-background);
+  color: var(--color-secondary);
+}
+
+.itemDanger {
+  color: var(--color-error);
+}
+
+.itemDanger:hover {
+  background-color: var(--color-error-bg);
+}
+
+.itemDisabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
