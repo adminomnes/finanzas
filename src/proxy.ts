@@ -57,12 +57,8 @@ export async function proxy(request: NextRequest) {
     const { payload } = await jwtVerify(token, JWT_SECRET)
     const data = payload as unknown as JWTPayload
 
-    const matchedRoute = Object.entries(routePermissions).find(([route]) =>
-      pathname.startsWith(route)
-    )
-
-    if (matchedRoute && data.role !== "SUPER_ADMIN") {
-      return NextResponse.redirect(new URL("/dashboard", request.url))
+    if (data.role === "SUPER_ADMIN") {
+      return NextResponse.next()
     }
 
     return NextResponse.next()
