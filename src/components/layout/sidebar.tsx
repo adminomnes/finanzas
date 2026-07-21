@@ -37,8 +37,8 @@ const NAVIGATION_GROUPS = [
   {
     title: "Finanzas",
     items: [
-      { label: "Gastos", href: "/expenses", icon: ArrowDownToLine },
-      { label: "Ingresos", href: "/ingresos", icon: ArrowUpToLine },
+      { label: "Gastos", href: "/expenses", icon: ArrowDownToLine, permission: "expenses.read" },
+      { label: "Ingresos", href: "/ingresos", icon: ArrowUpToLine, permission: "income.view" },
       { label: "Flujo de Caja", href: "/reports/flujo-caja", icon: Activity },
       { label: "Resultados", href: "/reports/estado-resultados", icon: LineChart }
     ]
@@ -46,26 +46,26 @@ const NAVIGATION_GROUPS = [
   {
     title: "Comercial",
     items: [
-      { label: "Clientes", href: "/ingresos/clientes", icon: Users },
-      { label: "Proveedores", href: "/suppliers", icon: Building2 },
-      { label: "Facturas", href: "/ingresos/facturas", icon: FileText },
-      { label: "Pagos", href: "/ingresos/pagos", icon: CreditCard }
+      { label: "Clientes", href: "/ingresos/clientes", icon: Users, permission: "clients.read" },
+      { label: "Proveedores", href: "/suppliers", icon: Building2, permission: "suppliers.read" },
+      { label: "Facturas", href: "/ingresos/facturas", icon: FileText, permission: "invoices.read" },
+      { label: "Pagos", href: "/ingresos/pagos", icon: CreditCard, permission: "payments.read" }
     ]
   },
   {
     title: "Reportes",
     items: [
-      { label: "Reportes Generales", href: "/reports", icon: PieChart }
+      { label: "Reportes Generales", href: "/reports", icon: PieChart, permission: "reports.read" }
     ]
   },
   {
     title: "Administración",
     items: [
-      { label: "Usuarios", href: "/admin", icon: UserCog }, // Mapping /admin to Users based on existing routes
-      { label: "Empresas", href: "/companies", icon: Building },
-      { label: "Auditoría", href: "/auditoria", icon: ShieldCheck },
-      { label: "Configuración", href: "/settings", icon: Settings },
-      { label: "Centro de Desarrollo", href: "/admin/development", icon: Terminal }
+      { label: "Usuarios", href: "/admin", icon: UserCog, permission: "users.read" },
+      { label: "Empresas", href: "/companies", icon: Building, permission: "companies.read" },
+      { label: "Auditoría", href: "/auditoria", icon: ShieldCheck, permission: "audit.view" },
+      { label: "Configuración", href: "/settings", icon: Settings, permission: "settings.read" },
+      { label: "Centro de Desarrollo", href: "/admin/development", icon: Terminal, permission: null }
     ]
   }
 ]
@@ -83,9 +83,11 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
 
   const groups = NAVIGATION_GROUPS.map(group => ({
     ...group,
-    items: group.items.filter(item => 
-      item.href !== "/admin/development" || user.role === "SUPER_ADMIN"
-    )
+    items: group.items.filter(item => {
+      if (item.href === "/admin/development") return user.role === "SUPER_ADMIN"
+      if (item.permission) return user.permissions.includes(item.permission)
+      return true
+    })
   })).filter(group => group.items.length > 0);
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/")

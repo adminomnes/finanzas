@@ -167,7 +167,19 @@ export async function getSession() {
 
   if (!user || !user.isActive || user.isLocked) return null
 
-  return user
+  let permissions: string[] = []
+  if (user.role === "SUPER_ADMIN") {
+    const allPerms = await prisma.permission.findMany({ select: { key: true } })
+    permissions = allPerms.map(p => p.key)
+  } else {
+    const rolePerms = await prisma.rolePermission.findMany({
+      where: { role: user.role as never },
+      select: { permission: { select: { key: true } } },
+    })
+    permissions = rolePerms.map(rp => rp.permission.key)
+  }
+
+  return { ...user, permissions }
 }
 
 export async function requireAuth() {

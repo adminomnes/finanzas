@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
-import { hashPassword, getSession, requireRole } from "@/lib/auth"
+import { hashPassword, getSession, requireRole, requirePermission } from "@/lib/auth"
 import { createAuditLog } from "@/lib/audit"
 
 export async function GET() {
@@ -41,7 +41,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const currentUser = await requireRole("SUPER_ADMIN", "ADMIN")
+    const currentUser = await requirePermission("users.create")
     const body = await request.json()
 
     const { email, password, firstName, lastName, role } = body

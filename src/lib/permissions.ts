@@ -101,8 +101,8 @@ export const ROLE_DEFAULT_PERMISSIONS: Record<string, string[]> = {
     PERMISSIONS.COMPANIES_CREATE.key,
     PERMISSIONS.COMPANIES_READ.key,
     PERMISSIONS.USERS_READ.key,
-    PERMISSIONS.USERS_CREATE.key,
     PERMISSIONS.USERS_UPDATE.key,
+    PERMISSIONS.USERS_DELETE.key,
     PERMISSIONS.AUDIT_READ.key,
     PERMISSIONS.AUDIT_VIEW.key,
     PERMISSIONS.AUDIT_EXPORT.key,
@@ -130,12 +130,11 @@ export const ROLE_DEFAULT_PERMISSIONS: Record<string, string[]> = {
 }
 
 export async function seedPermissions() {
-  const count = await prisma.permission.count()
-  if (count > 0) return
-
   for (const perm of Object.values(PERMISSIONS)) {
-    await prisma.permission.create({
-      data: {
+    await prisma.permission.upsert({
+      where: { key: perm.key },
+      update: { name: perm.name, module: perm.module, description: `Permiso para ${perm.name.toLowerCase()}` },
+      create: {
         key: perm.key,
         name: perm.name,
         module: perm.module,
@@ -148,15 +147,33 @@ export async function seedPermissions() {
   const permMap = new Map(permissions.map((p) => [p.key, p.id]))
 
   for (const [role, keys] of Object.entries(ROLE_DEFAULT_PERMISSIONS)) {
-    for (const key of keys) {
-      const permId = permMap.get(key)
-      if (permId) {
-        await prisma.rolePermission.create({
-          data: {
-            role: role as RoleType,
-            permissionId: permId,
-          },
-        })
+    const desired = new Set(keys)
+    const existing = await prisma.rolePermission.findMany({
+      where: { role: role as RoleType },
+      select: { permissionId: true, permission: { select: { key: true } } },
+    })
+    const existingKeys = new Set(existing.map((rp) => rp.permission.key))
+    const existingMap = new Map(existing.map((rp) => [rp.permission.key, rp.permissionId]))
+
+    for (const key of desired) {
+      if (!existingKeys.has(key)) {
+        const permId = permMap.get(key)
+        if (permId) {
+          await prisma.rolePermission.create({
+            data: { role: role as RoleType, permissionId: permId },
+          })
+        }
+      }
+    }
+
+    for (const key of existingKeys) {
+      if (!desired.has(key)) {
+        const permId = existingMap.get(key)
+        if (permId) {
+          await prisma.rolePermission.deleteMany({
+            where: { role: role as RoleType, permissionId: permId },
+          })
+        }
       }
     }
   }

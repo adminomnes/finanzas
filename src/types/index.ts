@@ -4,6 +4,7 @@ export interface UserSession {
   firstName: string
   lastName: string
   role: "SUPER_ADMIN" | "ADMIN" | "OPERATOR"
+  permissions: string[]
   isActive: boolean
   mustChangePwd: boolean
   lastLogin: Date | null
