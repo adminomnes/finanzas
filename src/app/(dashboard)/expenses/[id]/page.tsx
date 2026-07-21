@@ -71,15 +71,26 @@ export default function ExpenseDetailPage() {
   }, [params.id])
 
   const changeStatus = async (status: string) => {
+    const labels: Record<string, string> = {
+      PENDING: "Pendiente",
+      APPROVED: "Aprobado",
+      REJECTED: "Rechazado",
+      CANCELLED: "Anulado",
+    }
+    if (!confirm(`¿Cambiar estado a "${labels[status]}"?`)) return
+
     try {
       const res = await fetch(`/api/expenses/${params.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status }),
       })
+      const data = await res.json()
       if (res.ok) {
-        toast.success("Estado actualizado")
+        toast.success(data.message || "Estado actualizado")
         fetchExpense()
+      } else {
+        toast.error(data.error || "Error al actualizar")
       }
     } catch {
       toast.error("Error al actualizar")
@@ -263,36 +274,30 @@ export default function ExpenseDetailPage() {
           <h3 className="text-sm font-semibold text-[#1E293B] mb-4">
             Cambiar Estado
           </h3>
-          <div className="flex flex-wrap gap-2">
-            <Button
-              variant={expense.status === "PENDING" ? "primary" : "outline"}
-              size="sm"
-              onClick={() => changeStatus("PENDING")}
-            >
-              Pendiente
-            </Button>
-            <Button
-              variant={expense.status === "APPROVED" ? "primary" : "outline"}
-              size="sm"
-              onClick={() => changeStatus("APPROVED")}
-            >
-              Aprobar
-            </Button>
-            <Button
-              variant={expense.status === "REJECTED" ? "danger" : "outline"}
-              size="sm"
-              onClick={() => changeStatus("REJECTED")}
-            >
-              Rechazar
-            </Button>
-            <Button
-              variant={expense.status === "CANCELLED" ? "outline" : "ghost"}
-              size="sm"
-              onClick={() => changeStatus("CANCELLED")}
-            >
-              Anular
-            </Button>
-          </div>
+          {expense.status === "REJECTED" || expense.status === "CANCELLED" ? (
+            <p className="text-sm text-[#94A3B8]">Este gasto ya está en estado final ({statusLabels[expense.status]}). No se puede cambiar.</p>
+          ) : (
+            <div className="flex flex-wrap gap-2">
+              {expense.status !== "PENDING" && (
+                <Button variant="outline" size="sm" onClick={() => changeStatus("PENDING")}>
+                  Pendiente
+                </Button>
+              )}
+              {expense.status !== "APPROVED" && (
+                <Button variant="primary" size="sm" onClick={() => changeStatus("APPROVED")}>
+                  Aprobar
+                </Button>
+              )}
+              {expense.status !== "REJECTED" && (
+                <Button variant="danger" size="sm" onClick={() => changeStatus("REJECTED")}>
+                  Rechazar
+                </Button>
+              )}
+              <Button variant="ghost" size="sm" onClick={() => changeStatus("CANCELLED")}>
+                Anular
+              </Button>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

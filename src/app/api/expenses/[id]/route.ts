@@ -35,6 +35,43 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     const existing = await prisma.expense.findUnique({ where: { id } })
     if (!existing) return NextResponse.json({ error: "Gasto no encontrado" }, { status: 404 })
 
+    if (body.status && body.status !== existing.status) {
+      const validTransitions: Record<string, string[]> = {
+        DRAFT: ["PENDING"],
+        PENDING: ["APPROVED", "REJECTED", "CANCELLED"],
+        APPROVED: ["CANCELLED"],
+        REJECTED: [],
+        CANCELLED: [],
+      }
+      if (!validTransitions[existing.status]?.includes(body.status)) {
+        return NextResponse.json({ error: `No se puede cambiar de ${existing.status} a ${body.status}` }, { status: 400 })
+      }
+
+      await prisma.expense.update({ where: { id }, data: { status: body.status } })
+
+      await prisma.expenseStatusHistory.create({
+        data: {
+          expenseId: id,
+          previousStatus: existing.status,
+          newStatus: body.status,
+          changedById: user.id,
+          comment: body.comment || `Cambio de estado: ${existing.status} → ${body.status}`,
+        },
+      })
+
+      await createAuditLog({
+        userId: user.id,
+        action: body.status === "APPROVED" ? "APPROVE" : body.status === "REJECTED" ? "REJECT" : "UPDATE",
+        entity: "Expense",
+        entityId: id,
+        description: `Gasto ${existing.code}: ${existing.status} → ${body.status}`,
+        oldValue: { status: existing.status },
+        newValue: { status: body.status, comment: body.comment },
+      })
+
+      return NextResponse.json({ success: true, message: `Estado cambiado a ${body.status}` })
+    }
+
     if (existing.status === "APPROVED" && user.role !== "SUPER_ADMIN") {
       return NextResponse.json({ error: "No puedes modificar un gasto aprobado" }, { status: 403 })
     }
