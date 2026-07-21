@@ -16,12 +16,12 @@ interface Client {
   name: string
   rut: string
   type: "EMPRESA" | "PERSONA"
-  contact: string | null
+  contactName: string | null
   email: string | null
   phone: string | null
   isActive: boolean
-  invoicesCount: number
-  totalBilled: number
+  _count: { invoices: number }
+  totalInvoiced: number
   createdAt: string
 }
 
@@ -186,10 +186,10 @@ export default function ClientsPage() {
                         </div>
                       </td>
                       <td className="px-4 py-3 text-sm text-[#64748B]">
-                        {client.contact ? (
+                        {client.contactName ? (
                           <div className="flex items-center gap-1.5">
                             <Phone className="h-3.5 w-3.5 text-[#94A3B8]" />
-                            {client.contact}
+                            {client.contactName}
                           </div>
                         ) : (
                           <span className="text-[#CBD5E1]">—</span>
@@ -206,10 +206,10 @@ export default function ClientsPage() {
                         )}
                       </td>
                       <td className="px-4 py-3 text-sm text-right text-[#64748B]">
-                        {client.invoicesCount}
+                        {client._count.invoices}
                       </td>
                       <td className="px-4 py-3 text-sm font-semibold text-right text-[#1E293B] financial-number">
-                        {formatCurrency(client.totalBilled)}
+                        {formatCurrency(client.totalInvoiced)}
                       </td>
                       <td className="px-4 py-3 text-center">
                         <Badge variant={client.isActive ? "success" : "default"}>

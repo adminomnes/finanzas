@@ -25,12 +25,11 @@ interface ClientDetail {
   address: string | null
   phone: string | null
   email: string | null
-  contact: string | null
+  contactName: string | null
   paymentTerms: string | null
   isActive: boolean
-  totalBilled: number
-  invoicesCount: number
-  paymentsCount: number
+  totalInvoiced: number
+  _count: { invoices: number; payments: number }
   createdAt: string
   invoices: ClientInvoice[]
 }
@@ -173,7 +172,7 @@ export default function ClientDetailPage() {
             <div className="space-y-3">
               <div className="flex justify-between">
                 <span className="text-sm text-[#64748B]">Contacto Principal</span>
-                <span className="text-sm font-medium text-[#1E293B]">{client.contact || "—"}</span>
+                <span className="text-sm font-medium text-[#1E293B]">{client.contactName || "—"}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-sm text-[#64748B]">Condición de Pago</span>
@@ -199,16 +198,16 @@ export default function ClientDetailPage() {
             <div className="p-4 rounded-lg bg-[#F8FAFC]">
               <p className="text-xs text-[#64748B] mb-1">Total Facturado</p>
               <p className="text-lg font-semibold text-[#1E293B] financial-number">
-                {formatCurrency(client.totalBilled)}
+                {formatCurrency(client.totalInvoiced)}
               </p>
             </div>
             <div className="p-4 rounded-lg bg-[#F8FAFC]">
               <p className="text-xs text-[#64748B] mb-1">Facturas Emitidas</p>
-              <p className="text-lg font-semibold text-[#1E293B]">{client.invoicesCount}</p>
+              <p className="text-lg font-semibold text-[#1E293B]">{client._count.invoices}</p>
             </div>
             <div className="p-4 rounded-lg bg-[#F8FAFC]">
               <p className="text-xs text-[#64748B] mb-1">Pagos Registrados</p>
-              <p className="text-lg font-semibold text-[#1E293B]">{client.paymentsCount}</p>
+              <p className="text-lg font-semibold text-[#1E293B]">{client._count.payments}</p>
             </div>
           </div>
         </CardContent>
